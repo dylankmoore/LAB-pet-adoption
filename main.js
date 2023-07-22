@@ -242,20 +242,52 @@ const pets = [
     }
   ];
 
-  const targetingApp = document.querySelector("#app");
-  let domString = " ";
+  const renderToDom = (divId, html) => {
+    const targetedDiv = document.querySelector(divId)
+    targetedDiv.innerHTML = html
+  }
+  const cardsOnDom = (array) => {
+  let domString = ""
 
-  for (const pet of pets ) {
-    domString += `<div class="card" style="width: 18rem;">
-    <img src="${pet.imageUrl}" class="card-img-top" alt=${pet.name}>
-    <div class="card-body">
+  for (const pet of array) {
+    domString += `
+    
+    <div class="card" style="width: 18rem;">
+      <img src="${pet.imageUrl}" class="card-img-top" alt="...">
+      <div class="card-body">
       <h5 class="card-title">${pet.name}</h5>
       <p class="card-text">${pet.color}</p>
       <p class="card-text">${pet.specialSkill}</p>
-      <p class="card-text">${pet.type}</p>
-      <p class="card-text">${pet.id} </p>
+      <p class="card-text">${pet.typeOfPet}</p>
+      <p class="card-text">${pet.favorite}</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
-  </div>`
-  };
+  </div>`;
+  }
 
-  targetingApp.innerHTML = domString;
+  
+   renderToDom('#app', domString)
+  };
+  
+  cardsOnDom(pets)
+  const filterContainer = document.querySelector("#filter-container")
+  const filterPetsByType = (type) => { 
+    const filteredPets = pets.filter((pet) => pet.type === type)
+    cardsOnDom(filteredPets);
+  }
+  filterContainer.addEventListener('click', (e) => {
+    switch (e.target.id) {
+      case "cats":
+      filterPetsByType("cat");
+      break;
+      case "dogs":
+      filterPetsByType("dog");
+      break;
+      case "dinos":
+      filterPetsByType("dino");
+      break;
+      default:
+      cardsOnDom(pets);
+      break;
+    }
+  })
