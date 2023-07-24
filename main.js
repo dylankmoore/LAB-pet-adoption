@@ -242,52 +242,119 @@ const pets = [
     }
   ];
 
-  const renderToDom = (divId, html) => {
-    const targetedDiv = document.querySelector(divId)
-    targetedDiv.innerHTML = html
-  }
-  const cardsOnDom = (array) => {
-  let domString = ""
-
-  for (const pet of array) {
-    domString += `
-    
-    <div class="card" style="width: 18rem;">
-      <img src="${pet.imageUrl}" class="card-img-top" alt="...">
-      <div class="card-body">
-      <h5 class="card-title">${pet.name}</h5>
-      <p class="card-text">${pet.color}</p>
-      <p class="card-text">${pet.specialSkill}</p>
-      <p class="card-text">${pet.typeOfPet}</p>
-      <p class="card-text">${pet.favorite}</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>`;
-  }
-
-  
-   renderToDom('#app', domString)
+  const renderToDom = (divId, htmlToRender) => {
+    const selectedDiv = document.querySelector(divId);
+    selectedDiv.innerHTML = htmlToRender;
   };
-  
-  cardsOnDom(pets)
-  const filterContainer = document.querySelector("#filter-container")
-  const filterPetsByType = (type) => { 
-    const filteredPets = pets.filter((pet) => pet.type === type)
-    cardsOnDom(filteredPets);
+
+
+//  putting cards on the dom
+const cardsOnDom = (array) => {
+  let domString = ""
+  for (const pet of array) {
+    domString += 
+    `<div class="card" style="width: 18rem;">
+    <img src="${pet.imageUrl}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${pet.name}</h5>
+      <h6>${pet.color}</h6>
+      <p class="card-text">${pet.specialSkill}</p>
+      <h5>${pet.type}</h5>
+      <button class="btn btn-danger" id="delete--${pet.id}">Delete</button>
+    </div>
+  </div>`
   }
-  filterContainer.addEventListener('click', (e) => {
-    switch (e.target.id) {
-      case "cats":
-      filterPetsByType("cat");
-      break;
-      case "dogs":
-      filterPetsByType("dog");
-      break;
-      case "dinos":
-      filterPetsByType("dino");
-      break;
-      default:
-      cardsOnDom(pets);
-      break;
+
+ renderToDom("#container", domString);
+};
+
+const filter = (pets, typeString) => {
+  const typeArray = []
+  for (const pet of pets) {
+    if (pet.type === typeString) {
+      typeArray.push(pet);
     }
-  })
+  }
+
+  return typeArray;
+};
+
+// target buttons on the DOM
+const showCatsButton = document.querySelector("#cats");
+const showDogsButton = document.querySelector("#dogs");
+const showDinosButton = document.querySelector("#dinos");
+const showAllButton = document.querySelector("#all-pets");
+
+// click event showing all the cards
+showAllButton.addEventListener("click", () => {
+  cardsOnDom(pets);
+});
+
+// click event for specific pet types
+showCatsButton.addEventListener("click", () => {
+  const CatsForAdoption = filter(pets, "cat");
+  cardsOnDom(CatsForAdoption);
+});
+
+showDogsButton.addEventListener("click", () => {
+  const DogsForAdoption = filter(pets, "dog");
+  cardsOnDom(DogsForAdoption);
+});
+
+showDinosButton.addEventListener("click", () => {
+  const DinosForAdoption = filter(pets, "dino");
+  cardsOnDom(DinosForAdoption);
+});
+
+
+const createPet = (event) => {
+  event.preventDefault();
+  // values from the form
+  const name = document.querySelector("#name");
+  const email = document.querySelector("#email");
+  const petType = document.querySelector("#petType");
+  const image = document.querySelector("#image");
+  console.log(name);
+  console.log(name.value);
+
+   // creating objects from values
+    const newPet = {
+    name: name.value,
+    email: email.value,
+    petType: petType.value,
+    image: image.value
+  };
+  console.log("new pet", newPet);
+ pets.push(newPet);
+
+ cardsOnDom(pets);
+};
+
+// 2. event listener for submit button on form
+
+const submitButton = document.querySelector("#form-submit");
+submitButton.addEventListener("click", createPet);
+
+// adding delete button
+
+// target the div
+const containerDiv = document.querySelector("#container");
+
+// event listener
+containerDiv.addEventListener("click", (event) => {
+  if (event.target.id.includes("delete")) {
+    const [throwAWAY, petId] = event.target.id.split("--");
+     const indexOfPet = pets.findIndex (
+      (object) => object.id === Number(petId)
+    );
+    pets.splice(indexOfPet, 1);
+  } 
+  cardsOnDom(pets);
+
+}); 
+
+const startApp = () => {
+  cardsOnDom(pets);
+};
+
+startApp();
