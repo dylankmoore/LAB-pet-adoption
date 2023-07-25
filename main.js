@@ -316,33 +316,32 @@ showDinosButton.addEventListener("click", () => {
 });
 
 
-//
-const createPet = (event) => {
-  event.preventDefault();
-  // grab the values from form
-  const name = document.querySelector("#name");
-  const email = document.querySelector("#email");
-  const petType = document.querySelector("#petType");
-  const image = document.querySelector("#image");
-  console.log(name);
-  console.log(name.value);
+//adding pet form
 
-    const newPet = {
-    name: name.value,
-    email: email.value,
-    petType: petType.value,
-    image: image.value
-  };
-  console.log("new pet", newPet);
- 
- pets.push(newPet);
+const form = document.querySelector('form');
 
- 
- cardsOnDom(pets);
-};
+  const createPet = (e) => {
+    e.preventDefault();
 
-//event listener for the form submit
-const app = document.querySelector("#app");
+    const newPetObj = {
+      id: pets.length + 1,
+      name: document.querySelector('#name').value,
+      color: document.querySelector('#color').value,
+      specialSkill: document.querySelector('#specialSkill').value,
+      type: document.querySelector('input[name="petType"]:checked').value,
+      imageUrl: document.querySelector('#imageUrl').value,
+
+    }
+
+    pets.unshift(newPetObj);
+    cardsOnDom(pets);
+    form.reset();
+  }
+
+  form.addEventListener('submit', createPet);
+
+  const app = document.querySelector("#app");
+
 
 //capturing the clicks
 app.addEventListener('click', (e) => {
