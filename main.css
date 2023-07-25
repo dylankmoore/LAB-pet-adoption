@@ -1,17 +1,37 @@
-#container {
+.header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around; 
-}
-
-h1 {
-  text-align: center;
+  justify-content: center;
   font-family: 'Courier New', Courier, monospace;
-  color: lightslategray;
 }
 
 .buttons {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 25px;
+    margin-top: 15px;
+}
+
+#app {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 50px;
+}
+
+.radio {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+
+.card {
+    margin-bottom: 50px;
+}
+
+#petHeader {
+    display: flex;
+    justify-content: center;
+    font-family:'Courier New', Courier, monospace;
 }
